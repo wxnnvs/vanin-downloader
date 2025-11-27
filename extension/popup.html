@@ -1,9 +1,33 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Extension Popup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+      width: 200px;
+    }
+
+    #status {
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin-top: 5px;
+      width: 100%;
+    }
+  </style>
+</head>
+
 <body>
   <div id="status">Checking page…</div>
   <button id="runBtn" style="display:none;">Run Function</button>
+  <button id="gobackBtn" style="display:none;">Go to actual page</button>
 
   <script src="popup.js"></script>
 </body>
+
 </html>

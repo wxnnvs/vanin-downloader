@@ -8,7 +8,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://boardbooks.vanin.be/Pages/ViewItem.aspx*"],
+      "matches": ["https://boardbooks.vanin.be/*"],
       "js": ["content.js"]
     }
   ]
