@@ -1,6 +1,9 @@
 const runBtn = document.getElementById("runBtn");
 const gobackBtn = document.getElementById("gobackBtn");
-const status = document.getElementById("status");
+const statusThing = document.getElementById("status");
+const command = document.getElementById("downloadName");
+
+let downloadStarted = false;
 
 // Get the active tab
 chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -8,14 +11,18 @@ chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 
   if (tab && tab.url.includes("boardbooks.vanin.be")) {
     if (tab.url.includes("/Pages/ViewItem.aspx")) {
-      status.textContent = "You are on the iframe relay page.";
+      statusThing.textContent = "You are on the iframe relay page.";
       gobackBtn.style.display = "block";
     } else {
-      status.textContent = "Ready to download pages.";
+      chrome.tabs.sendMessage(tab.id, { action: "getName" }, (response) => {
+        if (response && response.name) {
+          statusThing.textContent = `python3 merger.py --output "${response.name}.pdf"`;
+        }
+      });
       runBtn.style.display = "block";
     }
   } else {
-    status.textContent = "Not on the target page.";
+    statusThing.textContent = "Not on the target page.";
   }
 
   // Run function in content script

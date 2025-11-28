@@ -15,6 +15,7 @@
     --glass-blur: 8px;
     --radius: 12px;
     --popup-max: 360px; /* safe max width for Chrome popups */
+    --button-height: 42px;
 }
 
 /* Reset + sizing fixes */
@@ -34,7 +35,9 @@ html, body {
 }
 
 body {
-    width: min(var(--popup-max), 100%);
+    /* width: min(var(--popup-max), 100%); */
+    width: var(--popup-max);
+    /* max-width: var(--popup-max); */
     max-width: var(--popup-max);
     padding: 20px;
     padding-top: calc(20px + env(safe-area-inset-top, 0px));
@@ -148,6 +151,7 @@ button {
     position: relative;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-height: var(--button-height);
 }
 
 /* Subtle glass look: soft inner blur on supported browsers */
@@ -247,4 +251,21 @@ button img, button svg {
 /* Prevent focus outline on mouse click but keep for keyboard users */
 :focus:not(:focus-visible) {
     outline: none;
+}
+
+pre {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    background: var(--status-bg);
+    border: 1px solid var(--status-border);
+    color: var(--status-text);
+    border-radius: calc(var(--radius) - 2px);
+    box-shadow: var(--shadow-1);
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    word-break: break-word;
+    white-space: pre-wrap;
 }

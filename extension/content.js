@@ -32,6 +32,17 @@ function get_page_count(){
   return null;
 }
 
+function get_name(){
+  // for example the url is https://boardbooks.vanin.be/CMS/CDS/Van%20In/Published%20Content/GENIE/GENIE%205%20biologie/GENIE%205%20Biologie%20Leerboek/js/index.html
+  // extract the "GENIE 5 Biologie Leerboek"
+  const path = window.location.pathname;
+  const parts = path.split('/');
+  if (parts.length >= 5) {
+    return decodeURIComponent(parts[parts.length - 3]);
+  }
+  return null;
+}
+
 function downloadPages() {
     const url_base = find_image_url();
     if (!url_base) {
@@ -39,11 +50,6 @@ function downloadPages() {
         return;
     }
 
-    // let amount = parseInt(prompt("Enter amount of pages\n(see bottom):"), 10);
-    // if (isNaN(amount) || amount <= 0) {
-    //     alert("Please enter a valid positive number.");
-    //     return;
-    // }
     let amount = get_page_count();
     if (!amount) {
         alert("Could not determine the number of pages.");
@@ -51,6 +57,7 @@ function downloadPages() {
     }
 
     if (confirm(`Start downloading ${amount} pages?`)) {
+    // if (true) {
         amount = amount + 5; // buffer
         const urls = [];
         for (let i = 0; i < amount; i++) {
@@ -69,6 +76,14 @@ chrome.runtime.onMessage.addListener((msg) => {
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.action === "goBack") {
     go_to_iframe();
+  }
+});
+
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.action === "getName") {
+    // response with the name
+    const name = get_name();
+    return Promise.resolve({ name: name });
   }
 });
 
