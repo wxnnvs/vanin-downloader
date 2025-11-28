@@ -36,14 +36,11 @@ function myInjectedFunction() {
 
     if (confirm(`Start downloading ${amount} pages?`)) {
         amount = amount + 10; // buffer
+        const urls = [];
         for (let i = 0; i < amount; i++) {
-            const a = document.createElement('a');
-            a.href = `${url_base}/${i}.png`;
-            a.download = `vanin-${i}.png`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
+            urls.push({ url: `${url_base}/${i}.png`, filename: `vanin-${i}.png` });
         }
+        chrome.runtime.sendMessage({ type: 'batchDownload', files: urls });
     }
 }
 

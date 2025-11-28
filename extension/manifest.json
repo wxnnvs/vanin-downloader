@@ -2,14 +2,25 @@
   "manifest_version": 3,
   "name": "BoardBooks Helper",
   "version": "1.0",
-  "permissions": ["tabs", "activeTab", "scripting"],
+  "permissions": ["tabs", "activeTab", "scripting", "downloads"],
+  "host_permissions": [
+    "https://boardbooks.vanin.be/*"
+  ],
   "action": {
     "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
       "matches": ["https://boardbooks.vanin.be/*"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "nig@ga.com"
+    }
+  }
 }
