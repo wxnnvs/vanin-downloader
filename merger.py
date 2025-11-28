@@ -38,7 +38,7 @@ def merge_pngs_to_pdf(directory=None, output="output.pdf"):
     # If output already exists, move it to output-<random 5 digits>.pdf
     if os.path.exists(output):
         rand_digits = random.randint(10000, 99999)
-        backup_name = f"output-{rand_digits}.pdf"
+        backup_name = f"{output.split('.pdf')[0]}-{rand_digits}.pdf"
         os.rename(output, backup_name)
         print(f"Existing output moved to {backup_name}")
 
