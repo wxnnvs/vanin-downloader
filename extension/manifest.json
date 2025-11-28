@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "BoardBooks Helper",
+  "name": "Vanin Boardbook Downloader",
   "version": "1.2",
   "permissions": ["tabs", "activeTab", "scripting", "downloads"],
   "host_permissions": [
@@ -18,6 +18,9 @@
       "js": ["content.js"]
     }
   ],
+  "icons": {
+    "128": "icon.png"
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "nig@ga.com"
