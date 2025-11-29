@@ -3,6 +3,7 @@ import sys
 from PIL import Image
 import random
 import argparse
+import ocrmypdf
 
 def get_default_download_dir():
     if os.name == "nt":  # Windows
@@ -44,12 +45,30 @@ def merge_pngs_to_pdf(directory=None, output="output.pdf"):
 
     # Save first image + append the rest to PDF
     first, rest = images[0], images[1:]
-    first.save(output, save_all=True, append_images=rest)
-    print(f"Saved PDF as {output}")
+    first.save(f'temp-{output}', save_all=True, append_images=rest)
+    print(f"Saved temp PDF as temp-{output}")
+    # Perform OCR to make it searchable
+    ocr_the_pdf(f'temp-{output}', output_pdf=output)
+    print(f"Final searchable PDF saved as {output}")
+    # Remove the temporary file
+    os.remove(f'temp-{output}')
     # delete all the png files
     for _, fname in png_files:
         os.remove(os.path.join(directory, fname))
-    print("Deleted original PNG files.")
+    print("Deleted temp pdf and original PNG files.")
+
+def ocr_the_pdf(input_pdf, output_pdf="output.pdf"):
+    ocrmypdf.ocr(
+        input_pdf,
+        output_pdf,
+        deskew=True,        # Straighten text if needed
+        optimize=0,         # Do NOT change image quality or fonts
+        clean=False,        # Don't try to reprocess or rescale images
+        clean_final=False,  # Leave original images untouched
+        force_ocr=True      # Ensure text layer is inserted
+        )
+
+    print("Done. Searchable PDF created:", output_pdf)
 
 parser = argparse.ArgumentParser(description="Merge PNGs to a single PDF.")
 parser.add_argument('--dir', type=str, default=None, help='Directory containing PNG files')
