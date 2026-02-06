@@ -48,7 +48,8 @@ def merge_pngs_to_pdf(directory=None, output="output.pdf"):
     first.save(f'temp-{output}', save_all=True, append_images=rest)
     print(f"Saved temp PDF as temp-{output}")
     # Perform OCR to make it searchable
-    ocr_the_pdf(f'temp-{output}', output_pdf=output)
+    if args.ocr:
+        ocr_the_pdf(f'temp-{output}', output_pdf=output)
     print(f"Final searchable PDF saved as {output}")
     # Remove the temporary file
     os.remove(f'temp-{output}')
@@ -65,19 +66,25 @@ def ocr_the_pdf(input_pdf, output_pdf="output.pdf"):
         optimize=0,         # Do NOT change image quality or fonts
         clean=False,        # Don't try to reprocess or rescale images
         clean_final=False,  # Leave original images untouched
-        force_ocr=True      # Ensure text layer is inserted
-        )
+        force_ocr=True,      # Ensure text layer is inserted
+        language='nld'       # Set OCR language to Dutch
+    )
 
     print("Done. Searchable PDF created:", output_pdf)
 
 parser = argparse.ArgumentParser(description="Merge PNGs to a single PDF.")
 parser.add_argument('--dir', type=str, default=None, help='Directory containing PNG files')
 parser.add_argument('--output', type=str, default="output.pdf", help='Output PDF file name')
+parser.add_argument('--ocr', action='store_true', help='Perform OCR on the output PDF')
+parser.add_argument('--ocr-only', action='store_true', help='Only perform OCR on an existing PDF file')
 args = parser.parse_args()
 
 directory = args.dir
 output = args.output
 
 if __name__ == "__main__":
-    merge_pngs_to_pdf(directory=directory if 'directory' in locals() else None,
+    if args.ocr_only:
+        ocr_the_pdf(f"temp-{output}", output_pdf=output)
+    else:
+        merge_pngs_to_pdf(directory=directory if 'directory' in locals() else None,
                       output=output if 'output' in locals() else "output.pdf")
