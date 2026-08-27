@@ -1,5 +1,7 @@
 *.png
 *.pdf
+*.zip
+web-ext-artifacts/
 extension/*.zip
 
 */__pycache__/
